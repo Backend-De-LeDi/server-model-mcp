@@ -23,10 +23,5 @@ class AgentBuilder:
             tools=tools,
             prompt=prompt
         )
-        
-        memory = ConversationBufferMemory(
-           memory_key="chat_history",
-           return_messages=True
-	   )
 
-        return AgentExecutor(agent=agent, tools=tools, memory=memory,verbose=True)
+        return AgentExecutor(agent=agent, tools=tools,verbose=True)
