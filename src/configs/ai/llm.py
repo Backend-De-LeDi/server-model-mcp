@@ -1,6 +1,6 @@
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.agents import create_tool_calling_agent, AgentExecutor
-from configs.tools.toolsSet import Toolset
+from configs.tools.MemoryToolsSet import MemoryToolset
 from configs.env.env import Env
 from configs.prompts.promptTemplate import build_prompt_template
 
@@ -8,8 +8,7 @@ class AgentBuilder:
     @staticmethod
     def build_agent() -> AgentExecutor:
         tools = [
-            Toolset.get_weather,
-            Toolset.getMemoryContext
+            MemoryToolset.getMemoryContext
 			]
 
         model = ChatGoogleGenerativeAI(

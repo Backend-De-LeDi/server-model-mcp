@@ -3,16 +3,13 @@ from services.modelMemory import MemoryService
 
 memoryService = MemoryService()
 
-class Toolset:
-	@tool
-	def get_weather(city: str) -> str:
-		"""Returns weather info for a given city"""
-		return f"In {city}, it's 27°C with 5.54 km/h wind"
+class MemoryToolset:
 
 	@tool
 	def getMemoryContext(userId: str, sessionId: str) -> str:
 		"""
-		Devuelve el historial de conversación para un usuario y sesión como texto plano.
+		 Devuelve el historial de conversación para un usuario y sesión como texto plano.
+		solo se usa si no tenes contexto pero debes usarlo para responer cosas que no saber.
 		
 		"""
 		docs = memoryService.getMemory(userId)
