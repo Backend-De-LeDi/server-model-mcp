@@ -4,6 +4,7 @@ class PromptSystem:
 		self.rules = []
 		self.tasks = []
 		self.response_style = []
+		self.toolsDescription = []
 
 	def add_instruction(self, text: str):
 		self.instructions.append(text)
@@ -13,6 +14,9 @@ class PromptSystem:
 
 	def add_task(self, text: str):
 		self.tasks.append(text)
+	
+	def tools_description(self, text: str):
+		self.toolsDescription.append(text)
 
 	def set_response_style(self, text: str):
 		self.response_style = [text]
@@ -22,6 +26,9 @@ class PromptSystem:
 
 		if self.instructions:
 			parts.append("Instructions:\n" + "\n".join(f"- {i}" for i in self.instructions))
+
+		if self.toolsDescription:
+			parts.append("tools description:\n" + "\n".join(f"- {i}" for i in self.toolsDescription))
 
 		if self.rules:
 			parts.append("Rules:\n" + "\n".join(f"- {r}" for r in self.rules))

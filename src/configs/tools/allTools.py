@@ -1,9 +1,7 @@
-from configs.tools.memoryToolsSet import MemoryToolset
 from configs.tools.bookToolSet import BookToolSet
 from configs.tools.usersToolsSet import UserToolSet
 
 mainTools = [
-	MemoryToolset().getMemoryContext,
 	BookToolSet().countBooks,
 	BookToolSet().countByFormat,
 	BookToolSet().countByGenre,

@@ -183,9 +183,6 @@ class BookService:
         ))
 
     def getIntelligenceBook(self, query: list[str], userLevel: str | None = None):
-        """
-        Busca libros usando texto completo o regex, filtrando por nivel si se pasa.
-        """
         if self.collections is None:
             return []
 
@@ -242,7 +239,7 @@ class BookService:
                     ]
                 }},
                 {"$addFields": {"matchScore": 0.1}},
-                {"$project": {
+                {"$project": {	
                     "_id": 0,
                     "title": 1,
                     "summary": 1,
@@ -301,48 +298,77 @@ class BookService:
             }
         ).sort("createdAt", -1))
 
-    def getBooksByFiltering(self, theme: list[str], subgenre: list[str], yearBook: list[str],
-                            genre: list[str], format: list[str], level: str | None = None):
-        """
-        Filtra libros por múltiples criterios, con jerarquía de nivel.
-        """
+    def getBooksByFiltering(self, theme: list[str] = None, subgenre: list[str] = None, yearBook: list[str] = None, genre: list[str] = None, format: list[str] = None, level: str | None = None):
+    
         if self.collections is None:
             return []
-
+        
         levelHierarchy = {
             "inicial": ["Inicial"],
             "secundario": ["Secundario", "Inicial"],
             "joven adulto": ["Joven Adulto", "Secundario", "Inicial"],
             "adulto mayor": ["Adulto Mayor", "Joven Adulto", "Secundario", "Inicial"]
         }
-
-        filters = {}
-        if yearBook: filters["yearBook"] = {"$in": yearBook}
-        if theme: filters["theme"] = {"$in": theme}
-        if subgenre: filters["subgenre"] = {"$in": subgenre}
-        if genre: filters["genre"] = {"$in": genre}
-        if format: filters["format"] = {"$in": format}
-        if level and levelHierarchy.get(level): filters["level"] = {"$in": levelHierarchy[level]}
-
-        pipeline = []
-        if filters:
-            pipeline.append({"$match": filters})
-
-        pipeline.append({"$sort": {"createdAt": -1}})
-        pipeline.append({"$project": {
-            "_id": 0,
-            "title": 1,
-            "summary": 1,
-            "genre": 1,
-            "subgenre": 1,
-            "theme": 1,
-            "language": 1,
-            "level": 1,
-            "format": 1,
-            "yearBook": 1,
-            "totalPages": 1
-        }})
-
+    
+        # Construcción de score conditions
+        scoreConditions = []
+        if yearBook:
+            scoreConditions.append({"$cond": [{"$in": ["$yearBook", yearBook]}, 1, 0]})
+        if theme:
+            scoreConditions.append({
+                "$cond": [{"$gt": [{"$size": {"$setIntersection": ["$theme", theme]}}, 0]}, 1, 0]
+            })
+        if subgenre:
+            scoreConditions.append({
+                "$cond": [{"$gt": [{"$size": {"$setIntersection": ["$subgenre", subgenre]}}, 0]}, 1, 0]
+            })
+        if genre:
+            scoreConditions.append({"$cond": [{"$in": ["$genre", genre]}, 1, 0]})
+        if format:
+            scoreConditions.append({"$cond": [{"$in": ["$format", format]}, 1, 0]})
+        if level and levelHierarchy.get(level):
+            scoreConditions.append({"$cond": [{"$in": ["$level", levelHierarchy[level]]}, 1, 0]})
+    
+        pipeline = [
+            # Calcular score
+            {"$addFields": {"score": {"$add": scoreConditions if scoreConditions else [0]}}},
+            # Filtrar solo los que tienen score > 0
+            {"$match": {"score": {"$gt": 0}}},
+            # Ordenar por score descendente
+            {"$sort": {"score": -1}},
+            # Lookup de autores
+            {"$lookup": {
+                "from": "authormodels",
+                "localField": "author",
+                "foreignField": "_id",
+                "as": "authorData"
+            }},
+            # Proyectar autores simplificados
+            {"$addFields": {
+                "author": {
+                    "$map": {
+                        "input": "$authorData",
+                        "as": "a",
+                        "in": {"_id": "$$a._id", "fullName": "$$a.fullName"}
+                    }
+                }
+            }},
+            # Proyección final
+            {"$project": {
+                "_id": 0,
+                "title": 1,
+                "summary": 1,
+                "genre": 1,
+                "subgenre": 1,
+                "theme": 1,
+                "language": 1,
+                "level": 1,
+                "format": 1,
+                "yearBook": 1,
+                "totalPages": 1,
+                "author": 1,
+                "score": 1
+            }}
+        ]
+    
         return list(self.collections.aggregate(pipeline))
-
-

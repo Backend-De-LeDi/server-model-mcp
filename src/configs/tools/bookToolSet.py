@@ -9,8 +9,10 @@ class BookToolSet:
     @tool("countBooks")
     def countBooks():
         """
-        Herramienta que devuelve la cantidad total de libros en la plataforma.
+        Devuelve la cantidad total de libros disponibles en la plataforma.
+        No recibe parámetros.
         """
+
         result = service.countBook()
         print(result)
         return result
@@ -18,8 +20,10 @@ class BookToolSet:
     @tool("countByFormat")
     def countByFormat():
         """
-        Herramienta que devuelve la cantidad de libros agrupados por formato.
+        Devuelve la cantidad de libros agrupados por formato (ejemplo: PDF, EPUB, físico).
+        No recibe parámetros.
         """
+
         result = service.countByFormat()
         print(result)
         return result
@@ -27,8 +31,10 @@ class BookToolSet:
     @tool("countByGenre")
     def countByGenre():
         """
-        Herramienta que devuelve la cantidad de libros agrupados por género.
+        Devuelve la cantidad de libros agrupados por género literario (ejemplo: ficción, historia).
+        No recibe parámetros.
         """
+
         result = service.countByGenre()
         print(result)
         return result
@@ -36,8 +42,10 @@ class BookToolSet:
     @tool("countBySubgenre")
     def countBySubgenre():
         """
-        Herramienta que devuelve la cantidad de libros agrupados por subgénero.
+        Devuelve la cantidad de libros agrupados por subgénero (ejemplo: ciencia ficción, biografía).
+        No recibe parámetros.
         """
+
         result = service.countBySubgenre()
         print(result)
         return result
@@ -45,8 +53,10 @@ class BookToolSet:
     @tool("getFormats")
     def getFormats():
         """
-        Herramienta que devuelve los formatos únicos de los libros.
+        Devuelve la lista de formatos únicos disponibles en los libros.
+        No recibe parámetros.
         """
+
         result = service.getFormats()
         print(result)
         return result
@@ -54,8 +64,10 @@ class BookToolSet:
     @tool("getGenres")
     def getGenres():
         """
-        Herramienta que devuelve los géneros únicos de los libros.
+        Devuelve la lista de géneros únicos disponibles en los libros.
+        No recibe parámetros.
         """
+
         result = service.getGenres()
         print(result)
         return result
@@ -63,8 +75,10 @@ class BookToolSet:
     @tool("getSubgenres")
     def getSubgenres():
         """
-        Herramienta que devuelve los subgéneros únicos de los libros.
+        Devuelve la lista de subgéneros únicos disponibles en los libros.
+        No recibe parámetros.
         """
+
         result = service.getSubgenres()
         print(result)
         return result
@@ -72,8 +86,10 @@ class BookToolSet:
     @tool("getLanguages")
     def getLanguages():
         """
-        Herramienta que devuelve los idiomas únicos de los libros.
+        Devuelve la lista de idiomas únicos disponibles en los libros.
+        No recibe parámetros.
         """
+
         result = service.getLanguages()
         print(result)
         return result
@@ -81,8 +97,10 @@ class BookToolSet:
     @tool("getLevels")
     def getLevels():
         """
-        Herramienta que devuelve los niveles únicos de los libros.
+        Devuelve la lista de niveles únicos de los libros (ejemplo: básico, intermedio, avanzado).
+        No recibe parámetros.
         """
+
         result = service.getLevels()
         print(result)
         return result
@@ -90,8 +108,11 @@ class BookToolSet:
     @tool("getBooksByTitle")
     def getBooksByTitle(title: str):
         """
-        Herramienta que devuelve libros por título (case-insensitive, coincidencia parcial).
+        Devuelve los libros cuyo título coincide parcial o totalmente con el texto ingresado.
+        Parámetros:
+        - title (str): texto del título a buscar. Insensible a mayúsculas/minúsculas.
         """
+
         result = service.getBooksByTitle(title)
         print(result)
         return result
@@ -99,8 +120,11 @@ class BookToolSet:
     @tool("getBooksByGenre")
     def getBooksByGenre(genre: str):
         """
-        Herramienta que devuelve libros por género (case-insensitive, coincidencia parcial).
+        Devuelve los libros que pertenecen a un género específico.
+        Parámetros:
+        - genre (str): nombre del género. Coincidencia parcial, insensible a mayúsculas/minúsculas valores aceptados(Narrativo y Poesía).
         """
+
         result = service.getBooksByGenre(genre)
         print(result)
         return result
@@ -108,8 +132,11 @@ class BookToolSet:
     @tool("getBooksBySubgenre")
     def getBooksBySubgenre(subgenre: str):
         """
-        Herramienta que devuelve libros por subgénero (case-insensitive, coincidencia parcial).
+        Devuelve los libros que pertenecen a un subgénero específico.
+        Parámetros:
+        - subgenre (str): nombre del subgénero. Coincidencia parcial, insensible a mayúsculas/minúsculas.
         """
+
         result = service.getBooksBySubgenre(subgenre)
         print(result)
         return result
@@ -117,8 +144,11 @@ class BookToolSet:
     @tool("getBooksByLanguage")
     def getBooksByLanguage(language: str):
         """
-        Herramienta que devuelve libros por idioma (case-insensitive, coincidencia parcial).
+        Devuelve los libros escritos en un idioma específico.
+        Parámetros:
+        - language (str): idioma a buscar. Coincidencia parcial, insensible a mayúsculas/minúsculas.
         """
+
         result = service.getBooksByLanguage(language)
         print(result)
         return result
@@ -126,8 +156,11 @@ class BookToolSet:
     @tool("getBooksByLevel")
     def getBooksByLevel(level: str):
         """
-        Herramienta que devuelve libros por nivel (case-insensitive, coincidencia parcial).
+        Devuelve los libros que corresponden a un nivel específico.
+        Parámetros:
+        - level (str): nivel de dificultad (ejemplo: básico, intermedio, avanzado).
         """
+
         result = service.getBooksByLevel(level)
         print(result)
         return result
@@ -135,8 +168,11 @@ class BookToolSet:
     @tool("getBooksByTheme")
     def getBooksByTheme(theme: str):
         """
-        Herramienta que devuelve libros por tema (case-insensitive, coincidencia parcial).
+        Devuelve los libros que coinciden con un tema específico.
+        Parámetros:
+        - theme (str): tema o palabra clave. Coincidencia parcial, insensible a mayúsculas/minúsculas.
         """
+
         result = service.getBooksByTheme(theme)
         print(result)
         return result
@@ -144,9 +180,13 @@ class BookToolSet:
     @tool("getIntelligenceBook")
     def getIntelligenceBook(query: list[str], userLevel: str = None):
         """
-        Herramienta que busca libros usando texto completo o regex,
-        filtrando por nivel si se pasa. Evita campos sensibles.
+        Busca libros usando coincidencia avanzada (texto completo o regex).
+        Permite filtrar por nivel si se especifica.
+        Parámetros:
+        - query (list[str]): lista de palabras clave o expresiones regulares.
+        - userLevel (str, opcional): nivel adecuado para el usuario (Inicial, Secundario, Joven Adulto y Adulto Mayor) .
         """
+
         result = service.getIntelligenceBook(query, userLevel)
         print(result)
         return result
@@ -154,8 +194,11 @@ class BookToolSet:
     @tool("getAllBooksByLevel")
     def getAllBooksByLevel(level: str):
         """
-        Herramienta que devuelve libros según jerarquía de nivel.
+        Devuelve todos los libros correspondientes a un nivel y su jerarquía asociada.
+        Parámetros:
+        - level (str): nivel adecuado para el usuario (Inicial, Secundario, Joven Adulto y Adulto Mayor).
         """
+
         result = service.getAllBooksByLevel(level)
         print(result)
         return result
@@ -168,8 +211,16 @@ class BookToolSet:
                             format: list[str] = None,
                             level: str = None):
         """
-        Herramienta que filtra libros por múltiples criterios (tema, subgénero, año, género, formato, nivel).
+        Filtra libros aplicando múltiples criterios de búsqueda.
+        Parámetros:
+        - theme (list[str], opcional): lista de temas.
+        - subgenre (list[str], opcional): lista de subgéneros.
+        - yearBook (list[str], opcional): lista de años de publicación.
+        - genre (list[str], opcional): lista de géneros.
+        - format (list[str], opcional): lista de formatos.
+        - level (str, opcional): nivel de dificultad.
         """
+
         result = service.getBooksByFiltering(theme or [],
                                              subgenre or [],
                                              yearBook or [],

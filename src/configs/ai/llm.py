@@ -1,8 +1,9 @@
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain.agents import create_tool_calling_agent, AgentExecutor
+from langchain.agents import AgentExecutor,create_openai_functions_agent
 from configs.env.env import Env
 from configs.prompts.promptTemplate import build_prompt_template
 from configs.tools.allTools import mainTools
+from rich import print
 
 class AgentBuilder:
     @staticmethod
@@ -11,13 +12,15 @@ class AgentBuilder:
 
         model = ChatGoogleGenerativeAI(
             model="gemini-2.5-flash",
-            temperature=0.5,
+            temperature=0,
             api_key=Env.getEnv("GEMINI_API_KEY"),
         )
 
         prompt = build_prompt_template()
+        
+        print(prompt)
 
-        agent = create_tool_calling_agent(
+        agent = create_openai_functions_agent(
             llm=model,
             tools=tools,
             prompt=prompt
