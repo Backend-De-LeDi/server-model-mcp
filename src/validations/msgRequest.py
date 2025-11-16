@@ -1,3 +1,6 @@
 from pydantic import BaseModel
+
 class MsgRequest(BaseModel):
-	msg: str
+    userId: str
+    sessionId: str
+    msg: str

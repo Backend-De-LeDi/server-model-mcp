@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+from configs.env.env import Env
 
 class Connection:
 	_instancia = None
@@ -11,10 +12,10 @@ class Connection:
 
 	def getConnection(self, url: str) -> tuple[bool, MongoClient | None]:
 		if self.cliente is not None:
-			return True, self.cliente
+			return True, self.cliente[Env.getEnv("DATABASE_NAME")]
 		try:
 			self.cliente = MongoClient(url)
-			return True, self.cliente
+			return True, self.cliente[Env.getEnv("DATABASE_NAME")]
 		except Exception as error:
 			print(error)
 			return False, None

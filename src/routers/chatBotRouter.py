@@ -13,10 +13,8 @@ class ChatBotRouter:
 
 		self.router.post("/chatBot",tags=["ChatBotRouter"])(self.chatBot)
 
-	async def chatBot(self,msg:MsgRequest):
+	async def chatBot(self,body:MsgRequest):
 
-		respone = await self.botServices.run(msg)
+		respone = await self.botServices.run(body)
 		
-		print(respone)
-
 		return JSONResponse(content={"msg": respone["output"]})

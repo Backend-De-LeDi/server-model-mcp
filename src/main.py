@@ -4,11 +4,14 @@ from configs.env.env import Env
 from configs.db.connection import Connection
 from utils.logers import Log
 from routers.chatBotRouter import ChatBotRouter
+from routers.memoryRouter import MemoryRouter
 
 app = FastAPI()
 chatBotRouters = ChatBotRouter()
+memoryRouter = MemoryRouter()
 
 app.include_router(chatBotRouters.router)
+app.include_router(memoryRouter.router)
 
 connectionMongo = Connection()
 

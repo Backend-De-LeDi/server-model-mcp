@@ -3,12 +3,14 @@ from langchain.agents import create_tool_calling_agent, AgentExecutor
 from configs.tools.toolsSet import Toolset
 from configs.env.env import Env
 from configs.prompts.promptTemplate import build_prompt_template
-from langchain.memory import ConversationBufferMemory
 
 class AgentBuilder:
     @staticmethod
     def build_agent() -> AgentExecutor:
-        tools = [Toolset.get_weather]
+        tools = [
+            Toolset.get_weather,
+            Toolset.getMemoryContext
+			]
 
         model = ChatGoogleGenerativeAI(
             model="gemini-2.5-flash",
