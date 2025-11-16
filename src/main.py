@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 from configs.env.env import Env
 from configs.db.connection import Connection
@@ -9,6 +10,14 @@ from routers.memoryRouter import MemoryRouter
 app = FastAPI()
 chatBotRouters = ChatBotRouter()
 memoryRouter = MemoryRouter()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], 
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(chatBotRouters.router)
 app.include_router(memoryRouter.router)

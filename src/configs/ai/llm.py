@@ -1,15 +1,13 @@
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.agents import create_tool_calling_agent, AgentExecutor
-from configs.tools.MemoryToolsSet import MemoryToolset
 from configs.env.env import Env
 from configs.prompts.promptTemplate import build_prompt_template
+from configs.tools.allTools import mainTools
 
 class AgentBuilder:
     @staticmethod
     def build_agent() -> AgentExecutor:
-        tools = [
-            MemoryToolset.getMemoryContext
-			]
+        tools = mainTools
 
         model = ChatGoogleGenerativeAI(
             model="gemini-2.5-flash",
