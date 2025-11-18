@@ -3,17 +3,21 @@ from langchain.agents import AgentExecutor
 from validations.msgRequest import MsgRequest
 from services.modelMemory import MemoryService
 from services.userService import UserService
+from services.bookService import BookService
+from rich import print
 
 class ChatBotServices:
 	model:AgentExecutor = None
 	memoryService = MemoryService()
 	userService = UserService()
+	bookService = BookService()
 
 	def __init__(self):
 		self.model = AgentBuilder.build_agent()
 
 
 	async def run(self,body:MsgRequest):
+
 		self.memoryService.saveMemory(body.userId,body.sessionId,"user",body.msg)
 		result = self.userService.getUserPreferences(body.userId)
 		
@@ -30,6 +34,7 @@ class ChatBotServices:
 			    for item in doc.get("content", [])
 		]
 
+		print(memoryText)
 
 		response = await self.model.ainvoke({
 			"input": body.msg,
@@ -39,5 +44,6 @@ class ChatBotServices:
 			"format":formatStr,
 			"memory_context": memoryText
 			})
+		
 		self.memoryService.saveMemory(body.userId,body.sessionId,"assistant",response["output"])
 		return response

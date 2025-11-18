@@ -57,7 +57,12 @@ class BookService:
         if self.collections is None:
             return []
         return self.collections.distinct("subgenre")
-
+    
+    def getThemes(self):
+        if self.collections is None:
+            return []
+        return self.collections.distinct("theme")
+    
     def getLanguages(self):
         if self.collections is None:
             return []
@@ -74,7 +79,7 @@ class BookService:
         return list(self.collections.find(
             {"title": {"$regex": title, "$options": "i"}},
             {
-                "_id": 0,
+                "_id": 1,
                 "title": 1,
                 "summary": 1,
                 "subgenre": 1,
@@ -98,7 +103,7 @@ class BookService:
         return list(self.collections.find(
             {"genre": {"$regex": genre, "$options": "i"}},
             {
-                "_id": 0,
+                "_id": 1,
                 "title": 1,
                 "summary": 1,
                 "genre": 1,
@@ -117,7 +122,7 @@ class BookService:
         return list(self.collections.find(
             {"subgenre": {"$regex": subgenre, "$options": "i"}},
             {
-                "_id": 0,
+                "_id": 1,
                 "title": 1,
                 "summary": 1,
                 "subgenre": 1,
@@ -152,7 +157,7 @@ class BookService:
         return list(self.collections.find(
             {"level": {"$regex": level, "$options": "i"}},
             {
-                "_id": 0,
+                "_id": 1,
                 "title": 1,
                 "summary": 1,
                 "level": 1,
@@ -170,7 +175,7 @@ class BookService:
         return list(self.collections.find(
             {"theme": {"$regex": theme, "$options": "i"}},
             {
-                "_id": 0,
+                "_id": 1,
                 "title": 1,
                 "summary": 1,
                 "theme": 1,
@@ -196,7 +201,7 @@ class BookService:
             {"$addFields": {"matchScore": {"$meta": "textScore"}}},
             {"$sort": {"matchScore": -1, "createdAt": -1}},
             {"$project": {
-                "_id": 0,
+                "_id": 1,
                 "title": 1,
                 "summary": 1,
                 "synopsis": 1,
@@ -240,7 +245,7 @@ class BookService:
                 }},
                 {"$addFields": {"matchScore": 0.1}},
                 {"$project": {	
-                    "_id": 0,
+                    "_id": 1,
                     "title": 1,
                     "summary": 1,
                     "synopsis": 1,
@@ -284,7 +289,7 @@ class BookService:
         return list(self.collections.find(
             {"level": {"$in": allowedLevels}},
             {
-                "_id": 0,
+                "_id": 1,
                 "title": 1,
                 "summary": 1,
                 "genre": 1,
@@ -355,7 +360,7 @@ class BookService:
             }},
             # Proyección final
             {"$project": {
-                "_id": 0,
+                "_id": 1,
                 "title": 1,
                 "summary": 1,
                 "genre": 1,
@@ -372,3 +377,12 @@ class BookService:
         ]
     
         return list(self.collections.aggregate(pipeline))
+    
+    def getYears(self):
+        if self.collections is None:
+            return []
+        
+        # Obtiene todos los valores únicos para 'yearBook' y los ordena
+        years = self.collections.distinct("yearBook")
+        # Filtra valores nulos o vacíos si existen
+        return sorted([year for year in years if year], reverse=True)

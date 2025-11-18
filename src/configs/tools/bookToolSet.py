@@ -83,6 +83,17 @@ class BookToolSet:
         print(result)
         return result
 
+    @tool("getThemes")
+    def getThemes():
+        """
+        Devuelve la lista de subgéneros únicos disponibles en los libros.
+        No recibe parámetros.
+        """
+
+        result = service.getThemes()
+        print(result)
+        return result
+
     @tool("getLanguages")
     def getLanguages():
         """

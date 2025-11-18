@@ -4,21 +4,21 @@ from configs.env.env import Env
 from configs.prompts.promptTemplate import build_prompt_template
 from configs.tools.allTools import mainTools
 from rich import print
-
 class AgentBuilder:
+
+
     @staticmethod
     def build_agent() -> AgentExecutor:
         tools = mainTools
 
         model = ChatGoogleGenerativeAI(
             model="gemini-2.5-flash",
-            temperature=0,
+            temperature=0.0 ,
             api_key=Env.getEnv("GEMINI_API_KEY"),
         )
 
         prompt = build_prompt_template()
         
-        print(prompt)
 
         agent = create_openai_functions_agent(
             llm=model,
